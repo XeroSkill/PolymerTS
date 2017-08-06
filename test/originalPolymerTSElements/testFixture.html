@@ -1,0 +1,30 @@
+
+<link rel="import" href="./polymer_register.html">
+<link rel="import" href="./test_components.html">
+
+<dom-module id="original-polymer-ts-tests">
+    <template>
+        <div id="put_test_elements_here" style="display:block; visibility:hidden; height: 1px;">
+            <test-element id="testElement"></test-element>
+
+            <label for="computedProperties1"></label>
+            <input is="test-input1" id="testInput1" title="test-input1">
+
+            <label for="computedProperties2"></label>
+            <input is="test-input2" id="testInput2" title="test-input1">
+
+            <computed-properties-test id="computedProperties1"></computed-properties-test>
+            <computed-properties-test id="computedProperties2"></computed-properties-test>
+
+            <div id="put_custom_constructor_here"></div>
+            <hr />
+        </div>
+    </template>
+</dom-module>
+
+<script>
+    Polymer({
+        is: 'original-polymer-ts-tests'
+    });
+</script>
+

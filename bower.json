@@ -1,27 +1,22 @@
 {
-  "name": "polymer-ts",
-  "homepage": "https://github.com/nippur72/PolymerTS",
+  "name": "x-poly-redux-ts",
+  "homepage": "",
   "authors": [
-    "Antonino Porcino <nino.porcino@gmail.com>"
+    "Antonino Porcino <nino.porcino@gmail.com>",
+    "Tim Culleton <mit_notelluc@hotmail.com>"
   ],
-  "description": "Polymer 1.0 for TypeScript",
-  "main": "polymer-ts.js",
-  "keywords": [
-    "polymer",
-    "typescript"
-  ],
+  "description": "TS Polymer 1 supporting Redux",
+  "main": "index.js",
   "license": "MIT",
   "ignore": [
-    "/*",
-    "!polymer-ts.*",
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
     "!LICENSE.txt",
     "!README.md"
   ],
   "dependencies": {
-    "polymer": ">=1.0.8",
-    "webcomponentsjs": ">=0.7.10"
-  },
-  "typescript": {
-    "definition": "polymer-ts.d.ts"
+    "polymer": "Polymer/polymer#^1.6.0"
   }
 }

@@ -1,17 +1,8 @@
 *.suo
 node_modules/
 bower_components/
-obj/
-bin/
-Test/bower_components/
-Test/obj/
-Test/bin/
-Test/*.map
-Test/*.js
-Test/elements/*.map
-Test/elements/*.js
-.vs/
+typings/
+.idea/
 
-packages/
-
-
+src/**/*.js
+test/**/*.js

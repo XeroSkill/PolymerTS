@@ -1,32 +1,28 @@
 {
-  "name": "polymer-ts",
-  "version": "0.2.2",
-  "description": "Polymer 1.0 for TypeScript",
-  "main": "polymer-ts.js",
+  "name": "x-poly-redux-ts",
+  "version": "0.0.1",
+  "description": "TS Polymer 1 supporting Redux",
+  "main": "index.js",
   "scripts": {
-    "uglifyjs": "uglify-js",
-    "minify": "uglifyjs -o polymer-ts.min.js --in-source-map polymer-ts.js.map --source-map polymer-ts.min.js.map --screw-ie8 --mangle --compress --keep-names polymer-ts.js",
-    "updatesubprojects": "cp polymer-ts.min.* Sample/bower_components/polymer-ts && cp polymer-ts.min.* Test/bower_components/polymer-ts",
-    "build": "node node_modules/typescript/bin/tsc && npm run minify && npm run updatesubprojects"
+    "tests": "karma start --single-run"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/nippur72/PolymerTS.git"
+    "url": "https://github.com/XeroSkill/XPolymerTS.git"
   },
   "keywords": [
     "polymer",
     "typescript"
   ],
-  "author": "Antonino Porcino <nino.porcino@gmail.com>",
+  "author": "Tim Culleton <mit_notelluc@hotmail.com>, Antonino Porcino <nino.porcino@gmail.com>",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/nippur72/PolymerTS/issues"
-  },
-  "homepage": "https://github.com/nippur72/PolymerTS",
+  "homepage": "https://github.com/XeroSkill/XPolymerTS",
   "devDependencies": {
-    "typescript": "^2.3.2",
-    "uglify-js": "^2.6.2"
-  },
-  "dependencies": {},
-  "typings": "polymer-ts.d.ts "
+    "jasmine": "^2.7.0",
+    "karma": "^1.7.0",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-jasmine": "^1.1.0",
+    "karma-spec-reporter": "0.0.31",
+    "typings": "^2.1.1"
+  }
 }
