@@ -6,3 +6,5 @@ typings/
 
 src/**/*.js
 test/**/*.js
+
+!test/test-main.js

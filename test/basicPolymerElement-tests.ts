@@ -1,3 +1,7 @@
+/// <amd-module name="test/basicPolymerElement-tests"/>
+
+import "./elements/simpleElements";
+
 describe(`<sample-control>`, () => {
 
     let container: HTMLElement;

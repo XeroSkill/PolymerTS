@@ -23,14 +23,22 @@ importTestElements(`/base/test/originalPolymerTSElements/testFixture.html`);
 
 // Delay Jasmine specs until WebComponentsReady
 let POLYMER_READY = false;
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
 beforeEach((done) => {
-    window.addEventListener(`WebComponentsReady`, () => {
-        POLYMER_READY = true;
-        console.log(`polymer-loaded`);
+
+    setTimeout(() => {
+        console.log(`PolymerLoaded.... I think`);
         done();
-    });
-    if(POLYMER_READY) {
-        `polymer-loader-check`;
-        done();
-    }
+    }, 1000);
+    //
+    // console.log(`Loading Polymer`);
+    // window.addEventListener(`WebComponentsReady`, () => {
+    //     POLYMER_READY = true;
+    //     console.log(`polymer-loaded`);
+    //     done();
+    // });
+    // if(POLYMER_READY) {
+    //     console.log(`polymer-loader-check`);
+    //     done();
+    // }
 });

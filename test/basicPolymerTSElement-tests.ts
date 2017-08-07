@@ -1,8 +1,17 @@
+/// <amd-module name="test/basicPolymerTSElement-tests"/>
+
+import {SimpleControlTS, SIMPLE_CONTROL_TAG} from "./elements/simpleElements"
+
 describe(`<simple-control-ts>`, ()=> {
     let container: HTMLElement;
     let control: SimpleControlTS;
+    let originalTimeout: number;
+    console.log(`starting test`);
 
     beforeEach((done) => {
+        originalTimeout = jasmine.DEFAULT_TIMEOUT_INTERVAL;
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
+
         container = document.createElement(`div`);
         control = <any>document.createElement(SIMPLE_CONTROL_TAG);
         container.appendChild(control);
@@ -13,7 +22,8 @@ describe(`<simple-control-ts>`, ()=> {
 
     afterEach(()=>{
         console.log(`tear-down`);
-        document.body.removeChild(container)
+        document.body.removeChild(container);
+        jasmine.DEFAULT_TIMEOUT_INTERVAL = originalTimeout;
     });
 
     it(`Polymer TS registration`, (done => {

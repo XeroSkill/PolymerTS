@@ -1,8 +1,9 @@
+/// <amd-module name="test/elements/simpleElements"/>
 
-const SIMPLE_CONTROL_TAG = `simple-control-ts`;
+export const SIMPLE_CONTROL_TAG = `simple-control-ts`;
 
 @component(SIMPLE_CONTROL_TAG)
-class SimpleControlTS extends polymer.Base {
+export class SimpleControlTS extends polymer.Base {
 
     @property({
         type: String,

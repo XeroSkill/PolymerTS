@@ -2,6 +2,9 @@
  * Original Polymer TS tests that have been adapted to be run in karma
  * A few 'any' tags have been added to make the TSC compiler happy (2.4.1)
  */
+/// <amd-module name="test/originalPolymerTS-tests"/>
+
+import "./elements/simpleElements";
 
 // simulates the old Jasmine 1.3 waitsFor()
 function waitFor(F)
@@ -18,8 +21,8 @@ function querySelector(s)
     return document.querySelector(s);
 }
 
-// quickly checks if instance implements the class
-function implements(instance: Object, classFunction: Function)
+// quickly checks if instance implementsElement the class
+function implementsElement(instance: Object, classFunction: Function)
 {
     var instanceMembers = {};
     for(var i in instance) instanceMembers[i] = true;
@@ -58,14 +61,14 @@ describe(`Original Polymer TS Tests`, ()=> {
     describe("@component decorator", () => {
         it('registers regular elements', () => {
             var el = <TestElement> querySelector('#testElement');
-            expect(implements(el, TestElement)).toBe(true);
+            expect(implementsElement(el, TestElement)).toBe(true);
             expect(el.is).toBe(TestElement.prototype["is"]);
             expect(el.$.inner.innerHTML).toBe("innerelement");
         });
 
         it('extends builtin elements using second argument', () => {
             var el = querySelector('#testInput1');
-            expect(implements(el, TestInput1)).toBe(true);
+            expect(implementsElement(el, TestInput1)).toBe(true);
         });
 
         it("sets 'is:' correctly", () => {
@@ -81,7 +84,7 @@ describe(`Original Polymer TS Tests`, ()=> {
     describe("@extend decorator", () => {
         it('extends builtin elements', () => {
             var el = querySelector('#testInput2');
-            expect(implements(el, TestInput2)).toBe(true);
+            expect(implementsElement(el, TestInput2)).toBe(true);
         });
     });
 
@@ -144,12 +147,12 @@ describe(`Original Polymer TS Tests`, ()=> {
 
         it("create elements that are extensions of HTMLElement", () => {
             var el = DoubleInitializationTest.create();
-            expect(implements(el, HTMLElement)).toBe(true);
+            expect(implementsElement(el, HTMLElement)).toBe(true);
         });
 
         it("create elements that are extensions Polymer.Base", () => {
             var el=DoubleInitializationTest.create();
-            expect(implements(el, Polymer.Base)).toBe(true);
+            expect(implementsElement(el, Polymer.Base)).toBe(true);
         });
 
         it("does not allow to redefine factoryImpl()", () => {

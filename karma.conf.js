@@ -10,18 +10,20 @@ module.exports = function(config) {
 
         // frameworks to use
         // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-        frameworks: ['jasmine'],
+        frameworks: ['jasmine', 'requirejs'],
 
 
         // list of files / patterns to load in the browser
         files: [
             'test/setup/polymerLoader.js',
+            'test/test-main.js',
             {pattern: "bower_components/**", included: false, served: true},
             {pattern: "src/polymerTS/**", included: false, served: true},
             {pattern: "samples/**", included: false, served: true},
-            {pattern: "test/elements/**", included: false, served: true},
-            {pattern: "test/originalPolymerTSElements/**", included: false, served: true},
-            'test/**/*-tests.js'
+            {pattern: "test/**", included: false, served: true}
+            // {pattern: "test/elements/**", included: false, served: true},
+            // {pattern: "test/originalPolymerTSElements/**", included: false, served: true},
+            // 'test/**/*-tests.js'
         ],
 
 
