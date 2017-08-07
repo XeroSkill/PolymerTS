@@ -1,11 +1,13 @@
 /// <amd-module name="test/elements/simpleElements"/>
 
+import * as Polymer from "../../src/polymerTS/polymerTSDecorators";
+
 export const SIMPLE_CONTROL_TAG = `simple-control-ts`;
 
-@component(SIMPLE_CONTROL_TAG)
+@Polymer.component(SIMPLE_CONTROL_TAG)
 export class SimpleControlTS extends polymer.Base {
 
-    @property({
+    @Polymer.property({
         type: String,
         reflectToAttribute: true,
         value: "test-page"
@@ -13,7 +15,7 @@ export class SimpleControlTS extends polymer.Base {
     public page: string;
 
 
-    @property({
+    @Polymer.property({
         type: String,
         value: "Tim"
     })
@@ -23,7 +25,7 @@ export class SimpleControlTS extends polymer.Base {
         this.page = `view404`;
     }
 
-    @observe(`page`)
+    @Polymer.observe(`page`)
     public onPageChange(pageValue: string) {
         console.log(`page has changed`);
     }

@@ -1,15 +1,18 @@
-@component("computed-properties-test")
-class ComputedPropertiesTest extends polymer.Base
-{
-   @property() first  = 1;
-   @property() second = 1;
+/// <amd-module name="test/originalPolymerTSElements/test_components"/>
+import * as Polymer from "../../src/polymerTS/polymerTSDecorators";
 
-   @computed() computed1(first, second)
+@Polymer.component("computed-properties-test")
+export class ComputedPropertiesTest extends polymer.Base
+{
+   @Polymer.property() first  = 1;
+   @Polymer.property() second = 1;
+
+   @Polymer.computed() computed1(first, second)
    {
       return first + second;
    }
 
-   @property({ computed: 'getcomputed2(first,second)' })
+   @Polymer.property({ computed: 'getcomputed2(first,second)' })
    computed2: number;
 
    getcomputed2()
@@ -20,11 +23,11 @@ class ComputedPropertiesTest extends polymer.Base
 
 ComputedPropertiesTest.register();
 
-@component("custom-constructor-test")
-@template("<div>this element has a custom constructor</div>")
-class CustomConstructorTest extends polymer.Base
+@Polymer.component("custom-constructor-test")
+@Polymer.template("<div>this element has a custom constructor</div>")
+export class CustomConstructorTest extends polymer.Base
 {
-   @property() bar: string;
+   @Polymer.property() bar: string;
 
    constructor(foo: string)
    {
@@ -35,14 +38,14 @@ class CustomConstructorTest extends polymer.Base
 
 CustomConstructorTest.register();
 
-@component("property-initialization-test")
-@template("")
-class PropertyInitializationTest extends polymer.Base {
-   @property() bar = "mybar"
+@Polymer.component("property-initialization-test")
+@Polymer.template("")
+export class PropertyInitializationTest extends polymer.Base {
+   @Polymer.property() bar = "mybar"
 
-   @property() foo: string;
+   @Polymer.property() foo: string;
 
-   @property({ value: "mywar" }) war;
+   @Polymer.property({ value: "mywar" }) war;
 
    constructor() {
       super();
@@ -52,14 +55,14 @@ class PropertyInitializationTest extends polymer.Base {
 
 PropertyInitializationTest.register();
 
-@component("double-initialization-test")
-@template("")
-class DoubleInitializationTest extends polymer.Base {
-   @property() bar="mybar"
+@Polymer.component("double-initialization-test")
+@Polymer.template("")
+export class DoubleInitializationTest extends polymer.Base {
+   @Polymer.property() bar="mybar"
 
-   @property() foo: string;
+   @Polymer.property() foo: string;
 
-   @property({ value: "mywar" }) war;
+   @Polymer.property({ value: "mywar" }) war;
 
    constructor() {
       super();
@@ -67,16 +70,16 @@ class DoubleInitializationTest extends polymer.Base {
    }
 }
 
-@component("uninitialized-test")
-@template("")
-class UnInitializedTest extends polymer.Base
+@Polymer.component("uninitialized-test")
+@Polymer.template("")
+export class UnInitializedTest extends polymer.Base
 {
-   @property() bar = "mybar"
+   @Polymer.property() bar = "mybar"
 }
 
-@component("no-factory-impl-test")
-@template("")
-class NoFactoryImplTest extends polymer.Base
+@Polymer.component("no-factory-impl-test")
+@Polymer.template("")
+export class NoFactoryImplTest extends polymer.Base
 {
    factoryImpl()
    {
@@ -84,18 +87,18 @@ class NoFactoryImplTest extends polymer.Base
    }
 }
 
-@component("listener-test")
-@template("")
-class ListenerTest extends polymer.Base
+@Polymer.component("listener-test")
+@Polymer.template("")
+export class ListenerTest extends polymer.Base
 {
-   @property() bar="mybar";
+   @Polymer.property() bar="mybar";
 
    constructor() {
       super();
       this.fire("change-bar");
    }
 
-   @listen("change-bar")
+   @Polymer.listen("change-bar")
    changeBarEvent()
    {
       this.bar = "foo";
@@ -104,35 +107,35 @@ class ListenerTest extends polymer.Base
 
 ListenerTest.register();
 
-@component("observer-test")
-@template("")
-class ObserverTest extends polymer.Base {
-   @property() bar="mybar";
-   @property() foo="myfoo";
-   @property() baz="mybaz";
-   @property() nbar_changed = 0;
-   @property() nbaz_changed = 0;
-   @property() nbar_foo_changed = 0;
-   @property() nmanager_changed = 0;
+@Polymer.component("observer-test")
+@Polymer.template("")
+export class ObserverTest extends polymer.Base {
+   @Polymer.property() bar="mybar";
+   @Polymer.property() foo="myfoo";
+   @Polymer.property() baz="mybaz";
+   @Polymer.property() nbar_changed = 0;
+   @Polymer.property() nbaz_changed = 0;
+   @Polymer.property() nbar_foo_changed = 0;
+   @Polymer.property() nmanager_changed = 0;
 
-   @property({type: Object}) user = { manager: "64" };
+   @Polymer.property({type: Object}) user = { manager: "64" };
 
-   @observe("bar")
+   @Polymer.observe("bar")
    changedBar() {
       this.nbar_changed++;
    }
 
-   @observe("baz")
+   @Polymer.observe("baz")
    changedBaz = (newVal, OldVal) => {
       this.nbaz_changed++;
    }
 
-   @observe("bar,foo")
+   @Polymer.observe("bar,foo")
    changedBarAndFoo() {
       this.nbar_foo_changed++;
    }
 
-   @observe("user.manager")
+   @Polymer.observe("user.manager")
    changedManager(newVal) {
       this.nmanager_changed++;
    }
@@ -140,10 +143,10 @@ class ObserverTest extends polymer.Base {
 
 ObserverTest.register();
 
-class BehaviorBaseTest extends polymer.Base {
+export class BehaviorBaseTest extends polymer.Base {
    hasfired: boolean;
 
-   @listen("base-called")
+   @Polymer.listen("base-called")
    onBaseCalled() {
       this.hasfired = true;
    }
@@ -171,16 +174,16 @@ var PojoBehaviour2 =
 };
 
 
-@component("behavior-test1")
-@template("")
-@behavior(BehaviorBaseTest)
-@behavior(PojoBehaviour1)
-class BehaviorTest1 extends polymer.Base
+@Polymer.component("behavior-test1")
+@Polymer.template("")
+@Polymer.behavior(BehaviorBaseTest)
+@Polymer.behavior(PojoBehaviour1)
+export class BehaviorTest1 extends polymer.Base
 {
-   @property() bar="mybar";
-   @property() hasfired=false;
+   @Polymer.property() bar="mybar";
+   @Polymer.property() hasfired=false;
 
-   @behavior(PojoBehaviour2)
+   @Polymer.behavior(PojoBehaviour2)
 
    attached()
    {
@@ -200,12 +203,12 @@ class BehaviorTest1 extends polymer.Base
 
 BehaviorTest1.register();
 
-@component("behavior-test2")
-@template("")
-class BehaviorTest2 extends polymer.Base {
-   @property() bar="mybar";
-   @property() hasfired=false;
-   @behavior(BehaviorBaseTest)
+@Polymer.component("behavior-test2")
+@Polymer.template("")
+export class BehaviorTest2 extends polymer.Base {
+   @Polymer.property() bar="mybar";
+   @Polymer.property() hasfired=false;
+   @Polymer.behavior(BehaviorBaseTest)
 
    attached() {
       this.fire("base-called");
@@ -222,44 +225,44 @@ class BehaviorTest2 extends polymer.Base {
 BehaviorTest2.register();
 
 
-@component("template-test")
+@Polymer.component("template-test")
 
-@template("<div>this element is made from a template<div id='inner'>inner text</div></div>")
+@Polymer.template("<div>this element is made from a template<div id='inner'>inner text</div></div>")
 
-@style
+@Polymer.style
 (`
    :host { display: block; }
    div { color: red; }
    #inner { width: 50px; }
 `)
 
-class TemplateTest extends polymer.Base
+export class TemplateTest extends polymer.Base
 {
-   @property() bar="mybar";
+   @Polymer.property() bar="mybar";
 }
 
 TemplateTest.register();
 
-@component("host-attributes-test")
+@Polymer.component("host-attributes-test")
 
-@template("<div>testing host attributes</div>")
+@Polymer.template("<div>testing host attributes</div>")
 
-@hostAttributes({ style: "color: red;" })
+@Polymer.hostAttributes({ style: "color: red;" })
 
-class HostAttributesTest extends polymer.Base
+export class HostAttributesTest extends polymer.Base
 {
-   @property() bar="mybar";
+   @Polymer.property() bar="mybar";
 }
 
 HostAttributesTest.register();
 
 
 
-@component("base-element-test")
-@template("")
-class BaseElementTest extends polymer.Base
+@Polymer.component("base-element-test")
+@Polymer.template("")
+export class BaseElementTest extends polymer.Base
 {
-   @property() prop="mybar";
+   @Polymer.property() prop="mybar";
 
    attached()
    {
@@ -282,7 +285,7 @@ class DoSomethingClass
    }
 }
 
-class ExtendedElementTestIntermediate extends BaseElementTest
+export class ExtendedElementTestIntermediate extends BaseElementTest
 {
    doSomethingIntermediate()
    {
@@ -290,13 +293,13 @@ class ExtendedElementTestIntermediate extends BaseElementTest
    }
 }
 
-@component("extended-element-test")
-class ExtendedElementTest extends ExtendedElementTestIntermediate
+@Polymer.component("extended-element-test")
+export class ExtendedElementTest extends ExtendedElementTestIntermediate
 {
-   @property() bar="mybar";
+   @Polymer.property() bar="mybar";
 
-   @property() pmix="";
-   @property() qmix="";
+   @Polymer.property() pmix="";
+   @Polymer.property() qmix="";
 
    attached() {
       super.attached();

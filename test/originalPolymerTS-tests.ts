@@ -4,7 +4,11 @@
  */
 /// <amd-module name="test/originalPolymerTS-tests"/>
 
-import "./elements/simpleElements";
+import {TestElement, TestInput1, TestInput2} from "./originalPolymerTSElements/polymer_register_test";
+import {ComputedPropertiesTest, CustomConstructorTest, UnInitializedTest} from "./originalPolymerTSElements/test_components";
+import {DoubleInitializationTest, NoFactoryImplTest, ListenerTest} from "./originalPolymerTSElements/test_components";
+import {ObserverTest, BehaviorTest1, BehaviorTest2} from "./originalPolymerTSElements/test_components"
+import {TemplateTest, HostAttributesTest, ExtendedElementTest} from "./originalPolymerTSElements/test_components"
 
 // simulates the old Jasmine 1.3 waitsFor()
 function waitFor(F)

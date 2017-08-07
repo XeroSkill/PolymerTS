@@ -1,4 +1,6 @@
-﻿function createMySimple()
+﻿/// <amd-module name="test/originalPolymerTSElements/my-simple"/>
+
+export function createMySimple()
 {
    Polymer(<any>
    {

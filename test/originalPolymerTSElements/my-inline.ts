@@ -1,15 +1,16 @@
-﻿class MyAbstract extends polymer.Base 
-{
-   makeSomeNoise()
-   {
+﻿/// <amd-module name="test/originalPolymerTSElements/my-inline"/>
+import * as Polymer from "../../src/polymerTS/polymerTSDecorators";
+
+export class MyAbstract extends polymer.Base {
+   makeSomeNoise() {
       console.log("argh!");
       this.fire("noise-made");
    }
 }
 
-@component("my-inline")
+@Polymer.component("my-inline")
 
-@template
+@Polymer.template
 (`
    <div>
       This element has been created completely from code
@@ -18,7 +19,7 @@
    </div>
 `)
 
-@style
+@Polymer.style
 (`
    :host { 
       display: block; 
@@ -29,10 +30,10 @@
    }
 `)
 
-class MyInline extends MyAbstract implements MyMixin
+export class MyInline extends MyAbstract implements MyMixin
 {
-   @property() public prop   = "hello world";  
-   @property() public marker = "default marker";  
+   @Polymer.property() public prop   = "hello world";
+   @Polymer.property() public marker = "default marker";
    
    //is = "my-inline"; 
 
@@ -85,7 +86,7 @@ class MyInline extends MyAbstract implements MyMixin
       console.log("attached()");
    }
 
-   @observe("prop")
+   @Polymer.observe("prop")
    hiChanged(newVal, oldVal)
    {
       console.log(`prop changed from ${oldVal} to ${newVal}`);
@@ -94,9 +95,9 @@ class MyInline extends MyAbstract implements MyMixin
    noiseMade: ()=>void;
 }
 
-class MyMixin extends polymer.Base 
+export class MyMixin extends polymer.Base
 {
-   @listen("noise-made")
+   @Polymer.listen("noise-made")
    noiseMade() {
       console.log("someone made noise!");
    }

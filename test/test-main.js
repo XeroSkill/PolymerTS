@@ -8,7 +8,7 @@ var pathToModule = function(path) {
 
 Object.keys(window.__karma__.files).forEach(function(file) {
     if (TEST_REGEXP.test(file)) {
-        console.log(`Loading Test file: ${file}`);
+        console.log('Loading Test file: ' + file);
         allTestFiles.push(pathToModule(file));
     }
 });
