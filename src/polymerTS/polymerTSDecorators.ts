@@ -1,5 +1,8 @@
 /// <amd-module name="src/polymerTS/polymerTSDecorators"/>
 
+//Side affect import to trigger the PolymerTS registration to the global object
+import "./polymer-ts";
+
 /**
  * @component decorator
  * @param {string} tagname
@@ -65,8 +68,8 @@ export function hostAttributes(attributes: Object) {
  * @param {polymer.Property} ob
  * @returns {(target: polymer.Element, propertyKey: string) => any}
  */
-export function property(ob?: polymer.Property) {
-    return (target: polymer.Element, propertyKey: string) => {
+export function property(ob?: PolymerTS.Property) {
+    return (target: PolymerTS.Element, propertyKey: string) => {
         target.properties = target.properties || {};
         if (typeof (target[propertyKey]) === "function") {
             // property is function, treat it as a computed property
@@ -88,8 +91,8 @@ export function property(ob?: polymer.Property) {
  * @param {polymer.Property} ob
  * @returns {(target: polymer.Element, computedFuncName: string) => any}
  */
-export function computed(ob?: polymer.Property) {
-    return (target: polymer.Element, computedFuncName: string) => {
+export function computed(ob?: PolymerTS.Property) {
+    return (target: PolymerTS.Element, computedFuncName: string) => {
         target.properties = target.properties || {};
         var propOb = ob || {};
         var getterName = "get_computed_" + computedFuncName;
@@ -109,7 +112,7 @@ export function computed(ob?: polymer.Property) {
  * @returns {(target: polymer.Element, propertyKey: string) => any}
  */
 export function listen(eventName: string) {
-    return (target: polymer.Element, propertyKey: string) => {
+    return (target: PolymerTS.Element, propertyKey: string) => {
         target.listeners = target.listeners || {};
         target.listeners[eventName] = propertyKey;
     }
@@ -143,7 +146,7 @@ export function behavior(behaviorObject: any): any {
  * @returns {(target: polymer.Element, observerFuncName: string) => any}
  */
 export function observe(observedProps: string) {
-    return (target: polymer.Element, observerFuncName: string) => {
+    return (target: PolymerTS.Element, observerFuncName: string) => {
         target.observers = target.observers || [];
         target.observers.push(observerFuncName + "(" + observedProps + ")");
     }

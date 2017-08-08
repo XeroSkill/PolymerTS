@@ -4,381 +4,208 @@
 //
 // Antonino Porcino, nino.porcino@gmail.com
 
-module PolymerTS {
+/// <amd-module name="src/polymerTS/polymer-ts"/>
 
-    // this is the original Polymer.Base
-    export declare class PolymerBase extends HTMLElement {
-        $: any;
-        $$: any;
+const POLYMER_TS = `PolymerTS`;
+const BASE = `Base`;
 
-        root:HTMLElement;
-        shadyRoot:HTMLElement;
-        style:CSSStyleDeclaration;
-        customStyle:{[property:string]:string;};
+//Custom methods
+const CREATE = `create`;
+const REGISTER = `register`;
+const CUSTOM_CONSTRUCTOR = `$custom_cons`;
+const CUSTOM_CONSTRUCTOR_ARGS = `$custom_cons_args`;
 
-        arrayDelete(path: string, item: string|any):any;
-        async(callback: Function, waitTime?: number):any;
-        attachedCallback():void;
-        attributeFollows(name: string, toElement: HTMLElement, fromElement: HTMLElement):void;
-        cancelAsync(handle: number):void;
-        cancelDebouncer(jobName: string):void;
-        classFollows(name: string, toElement: HTMLElement, fromElement: HTMLElement):void;
-        create(tag: string, props?: Object): HTMLElement;
-        debounce(jobName: string, callback: Function, wait?: number):void;
-        deserialize(value: string, type: any):any;
-        distributeContent():void;
-        domHost():void;
-        elementMatches(selector: string, node: Element):any;
-        fire(type: string, detail?: Object, options?: FireOptions):any;
-        flushDebouncer(jobName: string):void;
-        get(path: string|Array<string|number>):any;
-        getContentChildNodes(slctr: string):any;
-        getContentChildren(slctr: string):any;
-        getNativePrototype(tag: string):any;
-        getPropertyInfo(property: string):any;
-        importHref(href: string, onload?: Function, onerror?: Function, optAsync?: boolean):any;
-        instanceTemplate(template: any):any;
-        isDebouncerActive(jobName: string):any;
-        linkPaths(to: string, from: string):void;
-        listen(node: Element, eventName: string, methodName: string):void;
-        mixin(target: Object, source: Object):void;
-        notifyPath(path: string, value: any, fromAbove?: any):void;
-        notifySplices(path: string, splices: {index: number, removed: Array<any>, addedCount: number, object: Array<any>, type: "splice" }[]): void;
-        pop(path: string):any;
-        push(path: string, value: any):any;
-        reflectPropertyToAttribute(name: string):void;
-        resolveUrl(url: string):any;
-        scopeSubtree(container: Element, shouldObserve: boolean):void;
-        serialize(value: string):any;
-        serializeValueToAttribute(value: any, attribute: string, node: Element):void;
-        set(path: string|Array<string|number>, value: any, root?: Object): any;
-        setScrollDirection(direction: string, node: HTMLElement):void;
-        shift(path: string, value: any):any;
-        splice(path: string, start: number, deleteCount: number, ...items):any;
-        toggleAttribute(name: string, bool: boolean, node?: HTMLElement):void;
-        toggleClass(name: string, bool: boolean, node?: HTMLElement):void;
-        transform(transform: string, node?: HTMLElement):void;
-        translate3d(x, y, z, node?: HTMLElement):void;
-        unlinkPaths(path: string):void;
-        unlisten(node: Element, eventName: string, methodName: string): void;
-        unshift(path: string, value: any):any;
-        updateStyles(): void;
+//Polymer methods
+const FACTORY_IMPL = `factoryImpl`;
+const ATTACHED = `attached`;
+
+//Other
+// Had to index the extends property by string to get around a YUI compressor issue..
+const EXTENDS = `extends`;
+
+
+// create an ES6 inheritable Polymer.Base object, referenced as "polymer.Base"
+function createEs6PolymerBase() {
+    // create a placeholder class
+    let polymerBaseClass = function () {
+    };
+
+    if (!window[POLYMER_TS]) {
+        window[POLYMER_TS] = {};
     }
 
-    export interface dom
-    {
-        (node: HTMLElement): HTMLElement;
+    // make it available as polymer.Base
+    window[POLYMER_TS][BASE] = polymerBaseClass;
 
-        (node: PolymerTS.Base): HTMLElement;
-        flush();
+    // add a default create method()
+    polymerBaseClass[CREATE] = function () {
+        throw "element not yet registered in Polymer";
+    };
+
+    // add a default create method()
+    polymerBaseClass[REGISTER] = function (dontRegister?: boolean) {
+        if (dontRegister === true) {
+            createClass(this);
+        } else {
+            createElement(this);
+        }
+    }
+}
+
+function prepareForRegistration(elementClass: Function): PolymerTS.Element {
+    // copies members from inheritance chain to Polymer object
+    function copyMembers(dest: Object, source) {
+        if (source === undefined || source === null) return;
+
+        Object.keys(source).map((member) => {
+            // copy only if has not been defined
+            if (!dest.hasOwnProperty(member)) {
+                dest[member] = source[member];
+            }
+        });
+        copyMembers(dest, source.__proto__);
     }
 
-    // options for the fire method
-    export interface FireOptions
-    {
-        node?: HTMLElement | PolymerTS.Base;
-        bubbles?: boolean;
-        cancelable?: boolean;
-    }
+    // backward compatibility with TypeScript 1.4 (no decorators)
+    if (elementClass.prototype.is === undefined) {
+        let proto = elementClass.prototype;
+        let instance = new (<any>elementClass)();
 
-    // members that can be optionally implemented in an element
-    export interface Element {
-        properties?: Object;
-        listeners?: Object;
-        behaviors?: Object[];
-        observers?: String[];
-
-        // lifecycle
-        factoryImpl?(...args): void;
-        ready?(): void;
-        created?(): void;
-        attached?(): void;
-        detached?(): void;
-        attributeChanged?(attrName: string, oldVal: any, newVal: any): void;
-
-        //
-        prototype?: Object;
-    }
-
-    // members set by PolymerTS
-    export interface PolymerTSElement
-    {
-        $custom_cons?: FunctionConstructor;
-        $custom_cons_args?: any[];
-        template?: string;
-        style?: string;
-    }
-
-    // property definition interface
-    export interface Property {
-        name?: string;
-        type?: any;
-        value?: any;
-        reflectToAttribute?: boolean;
-        readOnly?: boolean;
-        notify?: boolean;
-        computed?: string;
-        observer?: string;
-    }
-
-    // the ES6-inheritable version of Polymer.Base
-    export declare class Base extends PolymerTS.PolymerBase implements PolymerTS.Element {
-        properties: Object;
-        listeners: Object;
-        behaviors: Object[];
-        observers: String[];
-        prototype: Object;
-
-        static create<T extends PolymerTS.Base>(...args: any[]): T;
-        static register(): void;
-        is: string;
-    }
-
-    // create an ES6 inheritable Polymer.Base object, referenced as "polymer.Base"
-    export function createEs6PolymerBase()
-    {
-        // create a placeholder class
-        var pb = function () { };
-
-        // make it available as polymer.Base
-        window["PolymerTS"]["Base"] = pb;
-
-        // add a default create method()
-        pb["create"] = function () {
-            throw "element not yet registered in Polymer";
+        if (!instance.is) {
+            throw new Error("no name for " + elementClass);
         }
 
-        // add a default create method()
-        pb["register"]=function(dontRegister?: boolean) {
-            if (dontRegister === true) PolymerTS.createClass(this);
-            else PolymerTS.createElement(this);
+        proto.is = instance.is;
+        if (instance[EXTENDS]) {
+            proto[EXTENDS] = instance[EXTENDS];
+        }
+        if (instance.properties) {
+            proto.properties = instance.properties;
+        }
+        if (instance.listeners) {
+            proto.listeners = instance.listeners;
+        }
+        if (instance.observers) {
+            proto.observers = instance.observers;
+        }
+        if (instance.behaviors) {
+            proto.behaviors = instance.behaviors;
+        }
+        if (instance.hostAttributes) {
+            proto.hostAttributes = instance.hostAttributes;
+        }
+        if (instance.style) {
+            proto.style = instance.style;
+        }
+        if (instance.template) {
+            proto.template = instance.template;
         }
     }
 
-    export function prepareForRegistration(elementClass: Function): PolymerTS.Element
-    {
-        // copies members from inheritance chain to Polymer object
-        function copyMembers(dest: Object, source)
-        {
-            if(source===undefined || source===null) return;
-            Object.keys(source).map((member)=>
-            {
-                // copy only if has not been defined
-                if(!dest.hasOwnProperty(member)) dest[member] = source[member];
-            });
-            copyMembers(dest, source.__proto__);
-        }
+    let preparedElement = elementClass.prototype;
 
-        // backward compatibility with TypeScript 1.4 (no decorators)
-        if(elementClass.prototype.is === undefined)
-        {
-            var proto = elementClass.prototype;
-            var instance = new (<any>elementClass)();
-            if (!instance.is) {
-                throw new Error("no name for " + elementClass);
-            }
-            proto.is                = instance.is;
-            if  (instance['extends']) {
-                proto['extends']        = instance['extends'];
-            }
-            if  (instance.properties) {
-                proto.properties     = instance.properties;
-            }
-            if  (instance.listeners) {
-                proto.listeners      = instance.listeners;
-            }
-            if  (instance.observers) {
-                proto.observers      = instance.observers;
-            }
-            if  (instance.behaviors) {
-                proto.behaviors      = instance.behaviors;
-            }
-            if  (instance.hostAttributes) {
-                proto.hostAttributes = instance.hostAttributes;
-            }
-            if  (instance.style) {
-                proto.style          = instance.style;
-            }
-            if  (instance.template) {
-                proto.template       = instance.template;
-            }
-        }
+    // artificial constructor: call constructor() and copies members
+    preparedElement[CUSTOM_CONSTRUCTOR] = function () {
+        // reads arguments coming from factoryImpl
+        let args = this.$custom_cons_args;
 
-        var preparedElement = elementClass.prototype;
+        // applies class constructor on the polymer element (this)
+        elementClass.apply(this, args);
+    };
 
-        // artificial constructor: call constructor() and copies members
-        preparedElement["$custom_cons"] = function () {
-            // reads arguments coming from factoryImpl
-            var args = this.$custom_cons_args;
+    // arguments for artificial constructor
+    preparedElement[CUSTOM_CONSTRUCTOR_ARGS] = [];
 
-            // applies class constructor on the polymer element (this)
-            elementClass.apply(this, args);
+    //TODO - Get rid of this, We want to preserve legacy method
+    //Modify factoryimpl method to call custom constructor
+    if (preparedElement[FACTORY_IMPL] !== undefined) {
+        throw `do not use ${FACTORY_IMPL}() use constructor() instead`;
+    } else {
+        preparedElement[FACTORY_IMPL] = function () {
+            this.$custom_cons_args = arguments;
         };
+    }
 
-        // arguments for artifical constructor
-        preparedElement["$custom_cons_args"] = [];
-
-        // modify "factoryImpl"
-        if (preparedElement["factoryImpl"] !== undefined) {
-            throw "do not use factoryImpl() use constructor() instead";
+    //TODO - Get rid of this, We want to preserve legacy method
+    // modify "attached" event function Invoke custom constructor instead
+    let oldFunction = preparedElement[ATTACHED];
+    preparedElement[ATTACHED] = function () {
+        this.$custom_cons();
+        if (oldFunction !== undefined) {
+            oldFunction.apply(this);
         }
-        else {
-            preparedElement["factoryImpl"] = function () {
-                this.$custom_cons_args = arguments;
-            };
-        }
+    };
 
-        // modify "attached" event function
-        var attachToFunction = "attached";
-        var oldFunction = preparedElement[attachToFunction];
-        preparedElement[attachToFunction] = function () {
-            this.$custom_cons();
-            if (oldFunction !== undefined) oldFunction.apply(this);
-        };
+    // copy inherited class members
+    copyMembers(preparedElement, elementClass.prototype.__proto__);
 
-        // copy inherited class members
-        copyMembers(preparedElement, elementClass.prototype.__proto__);
+    //putting string in prototype.style in decorator style makes it impossible to access and modify css styles of created elements
+    //so it needs to be deleted in order to access and modify styles
+    delete preparedElement["style"];
 
-        //putting string in prototype.style in decorator style makes it impossible to access and modify css styles of created elements
-        //so it needs to be deleted in order to access and modify styles
-        delete preparedElement["style"];
+    return preparedElement;
+}
 
-        return preparedElement;
+// a version that works in IE11 too
+function createDomModule(definition: PolymerTS.Element) {
+    let domModule = document.createElement('dom-module');
+
+    let proto = <any> definition.prototype;
+
+    domModule.id = proto.is;
+
+    let html = "";
+    let style = "";
+    if (proto.style !== undefined) style = `<style>${proto.style}</style>`;
+    if (proto.template !== undefined) html = `<template>${style}${proto.template}</template>`;
+
+    domModule.innerHTML = html;
+
+    (<any> domModule).createdCallback();
+}
+
+function createElement<T extends PolymerTS.Base>(element: new (...args: any[]) => T): new (...args: any[]) => T {
+    if (isRegistered(element)) {
+        throw "element already registered in Polymer";
     }
 
-    /*
-    // see https://github.com/Polymer/polymer/issues/2114
-    export function createDomModule(definition: polymer.Element) {
-       var domModule: any = document.createElement('dom-module');
-
-       var proto = <any> definition.prototype;
-
-       domModule.id = proto.is;
-
-       // attaches style
-       if (proto.style !== undefined) {
-          var elemStyle = (<any> document).createElement('style', 'custom-style');
-          domModule.appendChild(elemStyle);
-          elemStyle.textContent = proto.style;
-       }
-
-       // attaches template
-       if (proto.template !== undefined) {
-          var elemTemplate = document.createElement('template');
-          domModule.appendChild(elemTemplate);
-          elemTemplate.innerHTML = proto.template;
-       }
-
-       // tells polymer the element has been created
-       domModule.createdCallback();
-    }
-    */
-
-    // a version that works in IE11 too
-    export function createDomModule(definition: PolymerTS.Element) {
-        var domModule = document.createElement('dom-module');
-
-        var proto = <any> definition.prototype;
-
-        domModule.id = proto.is;
-
-        var html = "";
-        let style = "";
-        if (proto.style !== undefined)    style = `<style>${proto.style}</style>`;
-        if (proto.template !== undefined) html = `<template>${style}${proto.template}</template>`;
-
-        domModule.innerHTML = html;
-
-        (<any> domModule).createdCallback();
+    if ((<PolymerTS.PolymerTSElement>(element.prototype)).template !== undefined || (<PolymerTS.PolymerTSElement>(element.prototype)).style !== undefined) {
+        createDomModule(element);
     }
 
-    /*
-    // temporary version until https://github.com/Polymer/polymer/issues/2114 is fixed
-    export function createDomModule(definition: polymer.Element) {
-       var contentDoc = document.implementation.createHTMLDocument('template');
+    // register element and make available its constructor as "create()"
+    let maker = <any> Polymer(prepareForRegistration(element));
+    element[CREATE] = function () {
+        let newOb = Object.create(maker.prototype);
+        return maker.apply(newOb, arguments);
+    };
+    return maker;
+}
 
-       var domModule: any = document.createElement('dom-module');
-
-       var proto = <any> definition.prototype;
-
-       domModule.id = proto.is;
-
-       // attaches style
-       if (proto.style !== undefined) {
-          var elemStyle = (<any> document).createElement('style', 'custom-style');
-          domModule.appendChild(elemStyle);
-          elemStyle.textContent = proto.style;
-       }
-
-       // attaches template
-       if (proto.template !== undefined) {
-          var elemTemplate = document.createElement('template');
-          domModule.appendChild(elemTemplate);
-          contentDoc.body.innerHTML = proto.template;
-          while (contentDoc.body.firstChild) {
-            (<any>elemTemplate).content.appendChild(contentDoc.body.firstChild);
-          }
-       }
-
-       // tells polymer the element has been created
-       domModule.createdCallback();
-    }
-    */
-
-    export function createElement<T extends PolymerTS.Base>(element: new (...args: any[]) => T): new (...args: any[]) => T {
-        if (PolymerTS.isRegistered(element)) {
-            throw "element already registered in Polymer";
-        }
-        if ((<PolymerTS.PolymerTSElement>(element.prototype)).template !== undefined || (<PolymerTS.PolymerTSElement>(element.prototype)).style !== undefined) {
-            PolymerTS.createDomModule(element);
-        }
-        // register element and make available its constructor as "create()"
-        var maker = <any> Polymer(PolymerTS.prepareForRegistration(element));
-        element["create"]=function() {
-            var newOb=Object.create(maker.prototype);
-            return maker.apply(newOb, arguments);
-        };
-        return maker;
+function createClass<T extends PolymerTS.Base>(element: new (...args: any[]) => T): new (...args: any[]) => T {
+    if (isRegistered(element)) {
+        throw "element already registered in Polymer";
     }
 
-    export function createClass<T extends PolymerTS.Base>(element: new (...args: any[]) => T): new (...args: any[]) => T {
-        if (PolymerTS.isRegistered(element)) {
-            throw "element already registered in Polymer";
-        }
-        if ((<PolymerTS.PolymerTSElement>(element.prototype)).template !== undefined || (<PolymerTS.PolymerTSElement>(element.prototype)).style !== undefined) {
-            PolymerTS.createDomModule(element);
-        }
-        // register element and make available its constructor as "create()"
-        var maker = <any> Polymer.Class(PolymerTS.prepareForRegistration(element));
-        element["create"]=function() {
-            var newOb=Object.create(maker.prototype);
-            return maker.apply(newOb, arguments);
-        };
-        return maker;
+    if ((<PolymerTS.PolymerTSElement>(element.prototype)).template !== undefined || (<PolymerTS.PolymerTSElement>(element.prototype)).style !== undefined) {
+        createDomModule(element);
     }
 
-    export function isRegistered(element: PolymerTS.Element)
-    {
-        return (<PolymerTS.PolymerTSElement>(element.prototype)).$custom_cons !== undefined;
-    }
+    // register element and make available its constructor as "create()"
+    let maker = <any> Polymer.Class(prepareForRegistration(element));
+    element[CREATE] = function () {
+        let newOb = Object.create(maker.prototype);
+        return maker.apply(newOb, arguments);
+    };
+    return maker;
+}
 
-} // end module
+function isRegistered(element: PolymerTS.Element) {
+    return (<PolymerTS.PolymerTSElement>(element.prototype)).$custom_cons !== undefined;
+}
 
 // modifies Polymer.Base and makes it available as an ES6 class named polymer.Base
-PolymerTS.createEs6PolymerBase();
+createEs6PolymerBase();
 
-
-// Polymer object
-declare var Polymer: {
-    (prototype: PolymerTS.Element): FunctionConstructor;
-    Class(prototype: PolymerTS.Element): Function;
-    dom: PolymerTS.dom;
-    appendChild(node: HTMLElement): HTMLElement;
-    insertBefore(node: HTMLElement, beforeNode: HTMLElement): HTMLElement;
-    removeChild(node: HTMLElement): HTMLElement;
-    updateStyles(): void;
-
-    Base: any;
-};
 
 
