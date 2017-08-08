@@ -176,8 +176,8 @@ module polymer {
                 throw new Error("no name for " + elementClass);
             }
             proto.is                = instance.is;
-            if  (instance.extends) {
-                proto.extends        = instance.extends;
+            if  (instance['extends']) {
+                proto['extends']        = instance['extends'];
             }
             if  (instance.properties) {
                 proto.properties     = instance.properties;
