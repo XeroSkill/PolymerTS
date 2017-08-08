@@ -1,7 +1,7 @@
 ﻿/// <amd-module name="test/originalPolymerTSElements/my-inline"/>
 import * as Polymer from "../../src/polymerTS/polymerTSDecorators";
 
-export class MyAbstract extends polymer.Base {
+export class MyAbstract extends PolymerTS.Base {
    makeSomeNoise() {
       console.log("argh!");
       this.fire("noise-made");
@@ -95,7 +95,7 @@ export class MyInline extends MyAbstract implements MyMixin
    noiseMade: ()=>void;
 }
 
-export class MyMixin extends polymer.Base
+export class MyMixin extends PolymerTS.Base
 {
    @Polymer.listen("noise-made")
    noiseMade() {

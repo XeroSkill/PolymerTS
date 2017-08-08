@@ -26,10 +26,16 @@ let POLYMER_READY = false;
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 10000;
 beforeEach((done) => {
 
-    setTimeout(() => {
-        console.log(`PolymerLoaded.... I think`);
+    if (!POLYMER_READY) {
+        setTimeout(() => {
+            console.log(`PolymerLoaded.... I think`);
+            POLYMER_READY = true;
+            done();
+        }, 1000);
+    } else {
         done();
-    }, 1000);
+    }
+
     //
     // console.log(`Loading Polymer`);
     // window.addEventListener(`WebComponentsReady`, () => {

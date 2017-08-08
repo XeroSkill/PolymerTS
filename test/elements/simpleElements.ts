@@ -5,7 +5,7 @@ import * as Polymer from "../../src/polymerTS/polymerTSDecorators";
 export const SIMPLE_CONTROL_TAG = `simple-control-ts`;
 
 @Polymer.component(SIMPLE_CONTROL_TAG)
-export class SimpleControlTS extends polymer.Base {
+export class SimpleControlTS extends PolymerTS.Base {
 
     @Polymer.property({
         type: String,

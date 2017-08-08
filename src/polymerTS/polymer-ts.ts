@@ -4,7 +4,7 @@
 //
 // Antonino Porcino, nino.porcino@gmail.com
 
-module polymer {
+module PolymerTS {
 
     // this is the original Polymer.Base
     export declare class PolymerBase extends HTMLElement {
@@ -68,14 +68,15 @@ module polymer {
     export interface dom
     {
         (node: HTMLElement): HTMLElement;
-        (node: polymer.Base): HTMLElement;
+
+        (node: PolymerTS.Base): HTMLElement;
         flush();
     }
 
     // options for the fire method
     export interface FireOptions
     {
-        node?: HTMLElement|polymer.Base;
+        node?: HTMLElement | PolymerTS.Base;
         bubbles?: boolean;
         cancelable?: boolean;
     }
@@ -121,13 +122,14 @@ module polymer {
     }
 
     // the ES6-inheritable version of Polymer.Base
-    export declare class Base extends polymer.PolymerBase implements polymer.Element {
+    export declare class Base extends PolymerTS.PolymerBase implements PolymerTS.Element {
         properties: Object;
         listeners: Object;
         behaviors: Object[];
         observers: String[];
         prototype: Object;
-        static create<T extends polymer.Base>(...args: any[]): T;
+
+        static create<T extends PolymerTS.Base>(...args: any[]): T;
         static register(): void;
         is: string;
     }
@@ -139,7 +141,7 @@ module polymer {
         var pb = function () { };
 
         // make it available as polymer.Base
-        window["polymer"]["Base"] = pb;
+        window["PolymerTS"]["Base"] = pb;
 
         // add a default create method()
         pb["create"] = function () {
@@ -148,12 +150,12 @@ module polymer {
 
         // add a default create method()
         pb["register"]=function(dontRegister?: boolean) {
-            if(dontRegister===true) polymer.createClass(this);
-            else polymer.createElement(this);
+            if (dontRegister === true) PolymerTS.createClass(this);
+            else PolymerTS.createElement(this);
         }
     }
 
-    export function prepareForRegistration(elementClass: Function): polymer.Element
+    export function prepareForRegistration(elementClass: Function): PolymerTS.Element
     {
         // copies members from inheritance chain to Polymer object
         function copyMembers(dest: Object, source)
@@ -273,7 +275,7 @@ module polymer {
     */
 
     // a version that works in IE11 too
-    export function createDomModule(definition: polymer.Element) {
+    export function createDomModule(definition: PolymerTS.Element) {
         var domModule = document.createElement('dom-module');
 
         var proto = <any> definition.prototype;
@@ -323,15 +325,15 @@ module polymer {
     }
     */
 
-    export function createElement<T extends polymer.Base>(element: new (...args: any[]) => T): new (...args: any[]) => T {
-        if(polymer.isRegistered(element)) {
+    export function createElement<T extends PolymerTS.Base>(element: new (...args: any[]) => T): new (...args: any[]) => T {
+        if (PolymerTS.isRegistered(element)) {
             throw "element already registered in Polymer";
         }
-        if((<polymer.PolymerTSElement>(element.prototype)).template!==undefined||(<polymer.PolymerTSElement>(element.prototype)).style!==undefined) {
-            polymer.createDomModule(element);
+        if ((<PolymerTS.PolymerTSElement>(element.prototype)).template !== undefined || (<PolymerTS.PolymerTSElement>(element.prototype)).style !== undefined) {
+            PolymerTS.createDomModule(element);
         }
         // register element and make available its constructor as "create()"
-        var maker=<any> Polymer(polymer.prepareForRegistration(element));
+        var maker = <any> Polymer(PolymerTS.prepareForRegistration(element));
         element["create"]=function() {
             var newOb=Object.create(maker.prototype);
             return maker.apply(newOb, arguments);
@@ -339,15 +341,15 @@ module polymer {
         return maker;
     }
 
-    export function createClass<T extends polymer.Base>(element: new (...args: any[]) => T): new (...args: any[]) => T {
-        if(polymer.isRegistered(element)) {
+    export function createClass<T extends PolymerTS.Base>(element: new (...args: any[]) => T): new (...args: any[]) => T {
+        if (PolymerTS.isRegistered(element)) {
             throw "element already registered in Polymer";
         }
-        if((<polymer.PolymerTSElement>(element.prototype)).template!==undefined||(<polymer.PolymerTSElement>(element.prototype)).style!==undefined) {
-            polymer.createDomModule(element);
+        if ((<PolymerTS.PolymerTSElement>(element.prototype)).template !== undefined || (<PolymerTS.PolymerTSElement>(element.prototype)).style !== undefined) {
+            PolymerTS.createDomModule(element);
         }
         // register element and make available its constructor as "create()"
-        var maker=<any> Polymer.Class(polymer.prepareForRegistration(element));
+        var maker = <any> Polymer.Class(PolymerTS.prepareForRegistration(element));
         element["create"]=function() {
             var newOb=Object.create(maker.prototype);
             return maker.apply(newOb, arguments);
@@ -355,22 +357,22 @@ module polymer {
         return maker;
     }
 
-    export function isRegistered(element: polymer.Element)
+    export function isRegistered(element: PolymerTS.Element)
     {
-        return (<polymer.PolymerTSElement>(element.prototype)).$custom_cons!==undefined;
+        return (<PolymerTS.PolymerTSElement>(element.prototype)).$custom_cons !== undefined;
     }
 
 } // end module
 
 // modifies Polymer.Base and makes it available as an ES6 class named polymer.Base
-polymer.createEs6PolymerBase();
+PolymerTS.createEs6PolymerBase();
 
 
 // Polymer object
 declare var Polymer: {
-    (prototype: polymer.Element): FunctionConstructor;
-    Class(prototype: polymer.Element): Function;
-    dom: polymer.dom;
+    (prototype: PolymerTS.Element): FunctionConstructor;
+    Class(prototype: PolymerTS.Element): Function;
+    dom: PolymerTS.dom;
     appendChild(node: HTMLElement): HTMLElement;
     insertBefore(node: HTMLElement, beforeNode: HTMLElement): HTMLElement;
     removeChild(node: HTMLElement): HTMLElement;
